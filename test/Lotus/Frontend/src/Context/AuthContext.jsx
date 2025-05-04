@@ -1,3 +1,20 @@
+
+
+// utils/auth.js
+export const checkAuth = () => {
+    // Check if user is authenticated (you might use localStorage, cookies, or context)
+    return localStorage.getItem('isAuthenticated') === 'true';
+    // Or use your authentication context if you have one
+  };
+  
+  export const requireAuth = (navigate, from = '/') => {
+    if (!checkAuth()) {
+      navigate('/login', { state: { from } });
+      return false;
+    }
+    return true;
+  };
+
 // import { createContext, useContext, useEffect, useState } from 'react';
 // import axios from 'axios';
 

@@ -176,7 +176,7 @@ const AdminDashboard = () => {
       alert('Logout failed. Please try again.');
     }
   };
-
+  
   return (
     <div className="admin-dashboard">
       <aside className="admin-sidebar">
@@ -408,5 +408,4 @@ const AdminDashboard = () => {
     </div>
   );
 };
-
 export default AdminDashboard;

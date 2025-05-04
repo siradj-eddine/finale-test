@@ -35,6 +35,19 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:3000/logout', {}, {
+        withCredentials: true
+      });
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Logout failed:', error);
+      alert('Logout failed. Please try again.');
+    }
+  };
+  
+
   // Check if user is admin or superadmin
   const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.role === 'superadmin');
 
@@ -74,12 +87,12 @@ const Navbar = () => {
           </li>
           <li>
             {currentUser ? (
-              <Link to="/account" onClick={toggleMenu}>
-                <span className='login-icon'><FaUser /></span>
-              </Link>
+              <Link to="/login" onClick={() => { handleLogout(); toggleMenu(); }}>
+              <span className='login-icon'><FaSignInAlt/></span>
+            </Link>
             ) : (
               <Link to="/login" onClick={toggleMenu}>
-                <span className='login-icon'><FaSignInAlt /></span>
+                <span className='login-icon'><FaUser /></span>
               </Link>
             )}
           </li>

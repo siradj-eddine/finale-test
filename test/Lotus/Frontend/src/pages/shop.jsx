@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../css/shop.css';
 import '../css/Responsive.css';
 import { FaPlus, FaCheck } from 'react-icons/fa';
+import { useCart } from '../Context/cartContext';
 
 const Shop = () => {
   const { category } = useParams();
@@ -11,7 +12,7 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isAdded, setIsAdded] = useState({});
+  const { addToCart } = useCart();
 
   // Fetch products from database
   useEffect(() => {
@@ -45,12 +46,15 @@ const Shop = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const handleClickBtn = (product) => {
-    setIsAdded((prevIsAdded) => ({
-      ...prevIsAdded,
-      [product.id]: !prevIsAdded[product.id],
-    }));
-    // Here you would typically call AddToCart(product) from your cart context
+  const handleAddToCart = (product) => {
+    const cartItem = {
+      id: product.id,
+      name: product.category, // Using category as name since name isn't in the database
+      price: product.price,
+      description: product.description,
+      quantity: 1
+    };
+    addToCart(cartItem);
   };
 
   if (loading) return <div className="shop">Loading products…</div>;
@@ -76,7 +80,6 @@ const Shop = () => {
           {filteredProducts.map((product) => (
             <div className="product" key={product.id}>
               <Link to={`/productDetails/${product.id}`}>
-                {/* You'll need to add image support to your database if needed */}
                 <div className="product-image-placeholder">
                   {product.category.charAt(0).toUpperCase()}
                 </div>
@@ -86,13 +89,9 @@ const Shop = () => {
               <p>${product.price.toFixed(2)}</p>
               <button 
                 className="btn" 
-                onClick={() => handleClickBtn(product)}
+                onClick={() => handleAddToCart(product)}
               >
-                {isAdded[product.id] ? (
-                  <>Added to cart <FaCheck /></>
-                ) : (
-                  <><FaPlus /> Add to cart</>
-                )}
+                <FaPlus /> Add to cart
               </button>
             </div>
           ))}

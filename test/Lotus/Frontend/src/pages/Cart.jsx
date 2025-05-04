@@ -1,23 +1,40 @@
 import { useCart } from '../Context/cartContext';
 import '../css/Cart.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+// import { useEffect } from 'react';
+import { checkAuth } from '../Context/AuthContext'; // You'll need to create this utility
+
 const Cart = () => {
   const { cart, setCart } = useCart();
+  const navigate = useNavigate();
 
-  // Function to handle quantity change
+  // Function to handle checkout
+  const handleCheckout = () => {
+    // Check if user is authenticated
+    const isAuthenticated = checkAuth(); // Implement this function
+    
+    if (!isAuthenticated) {
+      // Redirect to login with return URL
+      navigate('/login', { state: { from: '/checkout' } });
+      return;
+    }
+    
+    // Proceed to checkout if authenticated
+    navigate('/checkout');
+  };
+
+  // Rest of your existing cart component...
   const handleQuantityChange = (index, newQuantity) => {
     const updatedCart = [...cart];
     updatedCart[index].quantity = newQuantity;
     setCart(updatedCart);
   };
 
-  // Function to remove an item from the cart
   const handleRemoveItem = (index) => {
     const updatedCart = cart.filter((_, i) => i !== index);
     setCart(updatedCart);
   };
 
-  // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
@@ -34,7 +51,7 @@ const Cart = () => {
               </div>
               <div className="item-details">
                 <h2>{item.name}</h2>
-                <p className="item-category">{item.Category}</p>
+                <p className="item-category">{item.category}</p>
                 <p className="item-price">${item.price}</p>
                 <div className="quantity-control">
                   <label htmlFor={`quantity-${index}`}>Quantity:</label>
@@ -60,7 +77,12 @@ const Cart = () => {
       {cart.length > 0 && (
         <div className="cart-summary">
           <h2>Total: ${totalPrice.toFixed(2)}</h2>
-          <Link to='/checkout'><button className="checkout-btn">Proceed to Checkout</button></Link>
+          <button 
+            className="checkout-btn" 
+            onClick={handleCheckout}
+          >
+            Proceed to Checkout
+          </button>
         </div>
       )}
     </div>

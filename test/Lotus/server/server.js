@@ -285,7 +285,7 @@ app.patch('/api/admin/users/:id/role', checkSuperAdmin, (req, res) => {
 
 });
 
-app.get('/api/admin/products', checkAdmin, (req, res) => {
+app.get('/api/admin/products', (req, res) => {
   db.all(
     `SELECT id, category, price, description
      FROM items`,
