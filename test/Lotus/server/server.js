@@ -363,14 +363,13 @@ app.get('/api/admin/users', checkAdmin, (req, res) => {
 });
 
 
-// app.get('/api/me', (req, res) => {
-//   if (!req.isAuthenticated()) {
-//     return res.json({ user: null });
-//   }
-//   // req.user comes from Passport.deserializeUser
-//   const { id, name, role, email } = req.user;
-//   res.json({ user: { id, name, email, role } });
-// });
+app.get('/api/me', checkAuthenticated, (req, res) => {
+  // Return minimal user data needed for the frontend
+  const { id, name, email, role } = req.user;
+  res.json({ 
+    user: { id, name, email, role } 
+  });
+});
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, "../Frontend/dist", "index.html"));

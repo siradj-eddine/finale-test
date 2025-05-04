@@ -1,49 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../css/navbar.css';
-import {useCart} from '../Context/cartContext'
-import {  FaUser, FaSignInAlt, FaBars, FaTimes } from 'react-icons/fa';
+import { useCart } from '../Context/cartContext';
+import { FaUser, FaSignInAlt, FaBars, FaTimes } from 'react-icons/fa';
 import ShopCategories from '../pages/shop-categories';
-import logo from '../photo/homePhoto/Artboard 3.png'
+import logo from '../photo/homePhoto/Artboard 3.png';
+import axios from 'axios';
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-const {cart} = useCart();
+  const { cart } = useCart();
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/me', {
+          withCredentials: true
+        });
+        setCurrentUser(response.data.user);
+      // eslint-disable-next-line no-unused-vars
+      } catch (error) {
+        setCurrentUser(null);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  // Check if user is admin or superadmin
+  const isAdmin = currentUser && (currentUser.role === 'admin' || currentUser.role === 'superadmin');
+
+  if (loadingUser) {
+    return <nav className="navbar">Loading...</nav>;
+  }
+
   return (
     <nav className="navbar">
       <div className="navbar-logo"><img src={logo} alt="logo" /></div>
 
-
       <div className="menu-icon" onClick={toggleMenu}>
         {isOpen ? <FaTimes /> : <FaBars />}
       </div>
-
 
       <ul className={`navbar-links ${isOpen ? 'active' : ''}`}>
         <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
         <li><Link to="/about-us" onClick={toggleMenu}>About</Link></li>
         <li><Link to="/shop" onClick={toggleMenu}><ShopCategories /></Link></li>
         <li><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
-        <li><Link to="/admin" onClick={toggleMenu}>Admin</Link></li>
+        
+        {/* Show Admin link only for admin/superadmin */}
+        {isAdmin && (
+          <li><Link to="/admin" onClick={toggleMenu}>Admin</Link></li>
+        )}
+
         <div className="navbar-icons">
-          {/* <li><Link to="" onClick={toggleMenu}>wishlist <span>(0)</span></Link></li> */}
           <li>
             <Link to="/cart" onClick={toggleMenu}>
               Cart
               {cart.length > 0 && (
-              <span className="cart-notification">
-                {cart.length}
-              </span>
-               )}
+                <span className="cart-notification">
+                  {cart.length}
+                </span>
+              )}
             </Link>
           </li>
-          {/* <li><Link to="" onClick={toggleMenu}><span className='search-icon'><FaSearch /></span></Link></li> */}
-          <li><Link to="login" onClick={toggleMenu}><span className='login-icon'><FaUser /></span></Link></li>
-          {/* <li><Link to="/login" onClick={toggleMenu}><span className='login-icon'><FaSignInAlt /></span></Link></li> */}
+          <li>
+            {currentUser ? (
+              <Link to="/account" onClick={toggleMenu}>
+                <span className='login-icon'><FaUser /></span>
+              </Link>
+            ) : (
+              <Link to="/login" onClick={toggleMenu}>
+                <span className='login-icon'><FaSignInAlt /></span>
+              </Link>
+            )}
+          </li>
         </div>
       </ul>
     </nav>
@@ -51,91 +90,3 @@ const {cart} = useCart();
 };
 
 export default Navbar;
-
-
-// import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import '../css/navbar.css';
-// import { useCart } from '../Context/cartContext';
-// import { FaUser, FaSignInAlt, FaBars, FaTimes } from 'react-icons/fa';
-// import ShopCategories from '../pages/shop-categories';
-// import logo from '../photo/homePhoto/Artboard 3.png';
-
-// const Navbar = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const { cart } = useCart();
-//   const [showShopDropdown, setShowShopDropdown] = useState(false);
-
-//   const toggleMenu = () => {
-//     setIsOpen(!isOpen);
-//   };
-
-//   const toggleShopDropdown = (e) => {
-//     e.preventDefault();
-//     setShowShopDropdown(!showShopDropdown);
-//   };
-
-//   return (
-//     <nav className="navbar">
-//       <div className="navbar-logo">
-//         <Link to="/">
-//           <img src={logo} alt="logo" />
-//         </Link>
-//       </div>
-
-//       <div className="menu-icon" onClick={toggleMenu}>
-//         {isOpen ? <FaTimes /> : <FaBars />}
-//       </div>
-
-//       <ul className={`navbar-links ${isOpen ? 'active' : ''}`}>
-//         <li><Link to="/" onClick={toggleMenu}>Home</Link></li>
-//         <li><Link to="/about-us" onClick={toggleMenu}>About</Link></li>
-//         <li className="shop-dropdown-container">
-//           <div 
-//             className="shop-link" 
-//             onClick={toggleShopDropdown}
-//             onMouseEnter={() => setShowShopDropdown(true)}
-//             onMouseLeave={() => setShowShopDropdown(false)}
-//           >
-//             Shop
-//             {showShopDropdown && (
-//               <div 
-//                 className="shop-dropdown"
-//                 onMouseEnter={() => setShowShopDropdown(true)}
-//                 onMouseLeave={() => setShowShopDropdown(false)}
-//               >
-//                 <ShopCategories closeMenu={() => {
-//                   setShowShopDropdown(false);
-//                   toggleMenu();
-//                 }} />
-//               </div>
-//             )}
-//           </div>
-//         </li>
-//         <li><Link to="/contact" onClick={toggleMenu}>Contact</Link></li>
-//         <li className="navbar-icons">
-//           <Link to="/cart" onClick={toggleMenu}>
-//             Cart
-//             {cart.length > 0 && (
-//               <span className="cart-notification">
-//                 {cart.length}
-//               </span>
-//             )}
-//           </Link>
-//         </li>
-//         <li className="navbar-icons">
-//           <Link to="/account" onClick={toggleMenu}>
-//             <span className='login-icon'><FaUser /></span>
-//           </Link>
-//         </li>
-//         <li className="navbar-icons">
-//           <Link to="/login" onClick={toggleMenu}>
-//             <span className='login-icon'><FaSignInAlt /></span>
-//           </Link>
-//         </li>
-//       </ul>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
