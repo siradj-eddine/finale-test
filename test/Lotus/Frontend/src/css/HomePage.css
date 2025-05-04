@@ -1,0 +1,520 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Home Page Styles */
+.home-page {
+  font-family: "Marcellus", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 99%;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+  background-color: white;
+  overflow: hidden;
+  transform: translateY(-180px);
+}
+
+.hero-text {
+  max-width: 800px;
+  position: relative;
+  z-index: 2;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.3s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.hero-text h2 {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.hero-text p {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+  color: #555;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Floating Yellow Circles */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.15) 0%, transparent 20%),
+    radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.15) 0%, transparent 20%);
+  z-index: 1;
+  animation: float 15s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(30px, 30px); }
+}
+
+/* Featured Products Section */
+.featured-products h3 {
+  font-size: 2.5rem;
+  font-weight: lighter;
+  text-align: center;
+}
+.featured-products h3::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: #111;
+  margin: 1rem auto 0;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.product-card p {
+  font-size: 1rem;
+  color: #a6a6a6;
+  font-weight: lighter;
+}
+
+.product-image {
+  width: 100%;
+  height: 60%;
+}
+
+/* Buttons */
+
+.shop-now-btn {
+  --color: #333; 
+  font-family: inherit;
+  display: inline-block;
+  width: 12em; 
+  height: 3.5em; 
+  line-height: 3.5em; 
+  margin: 20px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px solid var(--color); 
+  transition: color 0.5s;
+  z-index: 1;
+  font-size: 18px; 
+  font-weight: 500;
+  color: var(--color); 
+  background-color: transparent; 
+  border-radius: 0;
+  text-align: center; 
+  text-transform: uppercase; 
+}
+
+.shop-now-btn:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  background: var(--color);
+  height: 200px; 
+  width: 250px;
+  border-radius: 50%;
+}
+
+.shop-now-btn:hover {
+  color: #fff; 
+}
+
+.shop-now-btn:before {
+  top: 100%;
+  left: 100%;
+  transition: all 0.7s;
+}
+
+.shop-now-btn:hover:before {
+  top: -50px;
+  left: -50px; 
+}
+
+.shop-now-btn:active:before {
+  background: #222; 
+  transition: background 0s;
+}
+
+/* Categories Section */
+.product-categories {
+  margin-top: 5rem;
+  padding: 5rem;
+  background-color: #f8f8f8;
+  text-align: center;
+}
+
+.product-categories h3 {
+  font-size: 2.5rem;
+  font-weight: lighter;
+}
+.product-categories h3::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: #111;
+  margin: 1rem auto 0;
+}
+
+.category-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.category-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  height: 30rem;
+  width: 30%;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px #00000033;
+}
+
+.category-card h4,
+.category-card a {
+  font-size: 18px;
+  font-weight: 600;
+  color: #444;
+  text-decoration: none;
+}
+.category-card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Collection Section */
+.collection {
+  margin: 5rem 4rem;
+  width: 90%;
+  height: 35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 3rem;
+}
+
+.collection img {
+  width: 40%;
+  height: 100%;
+  background-color: #000000;
+}
+
+.collection-text {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.collection h3 {
+  font-size: 3.5rem;
+  font-weight: lighter;
+}
+
+.collection p {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: #a6a6a6;
+  font-weight: lighter;
+  text-align: start;
+}
+/* ===== Customer Feedback ===== */
+.feed-back {
+  padding: 5rem 2rem;
+  background-color: #f8f8f8;
+  text-align: center;
+}
+
+.feed-back h3 {
+  font-size: 2.2rem;
+  font-weight: 400;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.feed-back h3::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: #111;
+  margin: 1rem auto 0;
+}
+
+.feedback-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feedback-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.feedback-card:hover {
+  transform: translateY(-10px);
+}
+
+.customer-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  border: 3px solid #eee;
+}
+
+.feedback-card p {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.feedback-card h4 {
+  font-weight: 500;
+  color: #222;
+}
+
+/* Brands Section */
+.brands {
+  margin-top: 5rem;
+  padding: 2rem;
+  background-color: #ffffff;
+  text-align: center;
+}
+
+.brands h3 {
+  font-size: 2.5rem;
+  font-weight: lighter;
+}
+.brands h3::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 2px;
+  background: #111;
+  margin: 1rem auto 0;
+}
+
+.brand-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.brand-logos img {
+  width: 150px;
+  height: auto;
+  transition: transform 0.3s;
+}
+
+.brand-logos img:hover {
+  transform: scale(1.1);
+}
+
+/* Footer Section */
+footer div {
+  background-color:#0c0c0c;
+  color: #fff;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+footer section {
+  flex: 1;
+  min-width: 200px;
+  margin: 20px;
+}
+
+footer h4 {
+  border-bottom: 2px solid #fff;
+  padding-bottom: 10px;
+  font-size: 1.2em;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+footer li {
+  margin-bottom: 10px;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+footer a:hover {
+  color: #ccc;
+}
+
+footer {
+  background-color: #0c0c0c; 
+  color: #fff; 
+}
+
+.copyrights {
+  background-color: #0c0c0c; 
+  color: #fff; 
+  text-align: center;
+  padding: 10px; 
+  font-size: 0.9em;
+  
+}
+
+.cp {
+  color: grey;
+  cursor: pointer;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+  .hero-text h2 {
+    font-size: 2.5rem;
+  }
+
+  .hero-text p {
+    font-size: 1.2rem;
+  }
+
+  .category-card {
+    width: 45%;
+  }
+
+  .collection {
+    flex-direction: column;
+    height: auto;
+    gap: 2rem;
+  }
+
+  .collection img,
+  .collection-text {
+    width: 80%;
+  }
+
+  .feedback-card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text h2 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .category-card {
+    width: 100%;
+  }
+
+  .collection h3 {
+    font-size: 2.5rem;
+  }
+
+  .collection p {
+    font-size: 1rem;
+  }
+
+  .feedback-card {
+    width: 100%;
+  }
+
+  .brand-logos img {
+    width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .hero-text p {
+    font-size: 0.9rem;
+  }
+
+  .collection h3 {
+    font-size: 2rem;
+  }
+
+  .collection p {
+    font-size: 0.9rem;
+  }
+
+  .brand-logos img {
+    width: 80px;
+  }
+}
+
+
+
+
+
+
+    
